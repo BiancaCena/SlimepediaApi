@@ -1,0 +1,26 @@
+{
+	"name": "slimepedia",
+	"version": "1.0.0",
+	"main": "app.js",
+	"scripts": {
+		"start:dev": "nodemon server.js",
+		"start:prod": "NODE_ENV=production nodemon server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/BiancaCena/SlimepediaApi.git"
+	},
+	"author": "Bianca Cena",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/BiancaCena/SlimepediaApi/issues"
+	},
+	"homepage": "https://github.com/BiancaCena/SlimepediaApi#readme",
+	"description": "",
+	"dependencies": {
+		"body-parser": "^1.20.2",
+		"dotenv": "^16.4.5",
+		"express": "^4.19.2",
+		"mongoose": "^8.5.3"
+	}
+}
