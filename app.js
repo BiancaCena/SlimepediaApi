@@ -26,6 +26,6 @@ app.use((req, res, next) => {
 });
 
 // Declare routes
-app.use("/api/slimes", slimeRouter);
+app.use("/api", slimeRouter);
 
 module.exports = app;
