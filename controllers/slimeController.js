@@ -1,26 +1,8 @@
 const { query } = require("express");
 const Slime = require("./../models/slimeModel");
 
-exports.extractGameId = async (req, res, next) => {
-	if (req.params.gameId) {
-		// Extract the gameId from route parameters
-		req.query.games = req.params.gameId;
-	}
-
-	next();
-};
-
 exports.getAllSlimes = async (req, res) => {
 	try {
-		// ---------------- VALIDATION ---------------- //
-		const validGameIds = ["1", "2"];
-		if (req.query.games && !validGameIds.includes(req.query.games)) {
-			return res.status(400).json({
-				status: "fail",
-				message: "Invalid game id. The specified game does not exist",
-			});
-		}
-
 		// ---------------- INITIAL SETUP ---------------- //
 		// Create a copy of the query parameters from the request
 		const queryObj = { ...req.query };
