@@ -3,44 +3,31 @@ const Slime = require("./../models/slimeModel");
 
 exports.getAllSlimes = async (req, res) => {
 	try {
-		// ---------------- INITIAL SETUP ---------------- //
 		// Create a copy of the query parameters from the request
 		const queryObj = { ...req.query };
-
 		// List fields to exclude from filtering (pagination, sorting, etc.)
 		const excludedFields = ["page", "sort", "limit", "fields"];
 		// Remove the excluded fields from the query object
-		excludedFields.forEach((field) => delete queryObj[field]);
+		excludedFields.forEach((el) => delete queryObj[el]);
 
-		// ---------------- FILTERING ---------------- //
+		// Build Query
 		// Convert the query object to a JSON string for manipulation
 		let queryStr = JSON.stringify(queryObj);
 
-		// Replace comparison operators with MongoDB's query syntax (e.g., $gte, $gt, $lte, $lt)
+		// Replace comparison operators with MongoDB's query syntax (i.e., $gte, $gt, $lte, $lt)
 		queryStr = queryStr.replace(
 			/\b(gte|gt|lte|lt|eq|ne|in|nin)\b/g,
 			(match) => `$${match}`
 		);
 
-		// Parse the modified query string back to an object for MongoDB query
-		// Create the query with the filtered conditions
-		let query = Slime.find(JSON.parse(queryStr));
+		// Parse the modified query string back to an object
+		const query = Slime.find(JSON.parse(queryStr));
 
-		// ---------------- SORTING ---------------- //
-		if (req.query.sort) {
-			// Separate the sort fields by space (ex. "type,name" becomes "type name")
-			const sortBy = req.query.sort.split(",").join(" ");
-			query = query.sort(sortBy);
-		} else {
-			// If no sort parameter is provided, use a default sorting
-			query = query.sort("_id");
-		}
+		console.log(JSON.parse(queryStr));
 
-		// ---------------- EXECUTE QUERY ---------------- //
 		// Execute the query to fetch the slimes from the database
 		const slimes = await query;
 
-		// ---------------- RESPONSE ---------------- //
 		// Send a successful response with the fetched data
 		res.status(200).json({
 			status: "success",
@@ -49,10 +36,9 @@ exports.getAllSlimes = async (req, res) => {
 			data: { slimes },
 		});
 	} catch (err) {
-		// Handle errors and send a failure response
 		res.status(404).json({
 			status: "fail",
-			message: err.message || "An error occurred",
+			message: err,
 		});
 	}
 };
