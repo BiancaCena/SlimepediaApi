@@ -47,6 +47,22 @@ exports.getAllSlimes = async (req, res) => {
 			query = query.select("-__v");
 		}
 
+		// ---------------- PAGINATION ---------------- //
+		const page = req.query.page * 1 || 1;
+		const limit = req.query.limit * 1 || 6;
+
+		// Calculate the number of items to skip based on the current page and limit
+		const skip = (page - 1) * limit;
+
+		if (req.query.page) {
+			// Check if the requested page is valid
+			const numberOfSlimes = await Slime.countDocuments();
+			if (skip >= numberOfSlimes) throw new Error("This page does not exists");
+		}
+
+		// Apply pagination to the query
+		query = query.skip(skip).limit(limit);
+
 		// ---------------- EXECUTE QUERY ---------------- //
 		// Execute the query to fetch the slimes from the database
 		const slimes = await query;
