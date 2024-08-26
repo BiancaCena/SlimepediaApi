@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const fs = require("fs");
 const path = require("path");
-const Slime = require("../models/slimeModel");
+const Slime = require("./../models/slimeModel");
 
 dotenv.config({ path: "./config.env" });
 
@@ -36,6 +36,7 @@ const importData = async () => {
 		const transformedSlimes = slimes.map((slime) => ({
 			...slime,
 			_id: slime.id, // Assign id value to _id
+			id: undefined, // Remove id field
 		}));
 
 		// Save transformed slimes to the database
