@@ -36,6 +36,17 @@ exports.getAllSlimes = async (req, res) => {
 			query = query.sort("_id");
 		}
 
+		// ---------------- LIMITING ---------------- //
+		if (req.query.fields) {
+			// Separate the limit fields by space (ex. "type,name" becomes "type name")
+			const fields = req.query.fields.split(",").join(" ");
+			// Select only the specified fields from the query results
+			query = query.select(fields);
+		} else {
+			// If no specific fields are requested, exclude the version field from the results
+			query = query.select("-__v");
+		}
+
 		// ---------------- EXECUTE QUERY ---------------- //
 		// Execute the query to fetch the slimes from the database
 		const slimes = await query;
