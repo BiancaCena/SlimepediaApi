@@ -2,8 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
 
-// import routes when initialized
-// ex. const userRouter = require('./routes/userRoutes');
+// import routes
+const slimeRouter = require("./routes/slimeRoutes");
 
 const app = express();
 
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 	next();
 });
 
-// Declare routes when initialized
-// ex. app.use('/api/v1/users', userRouter);
+// Declare routes
+app.use("/api", slimeRouter);
 
 module.exports = app;
