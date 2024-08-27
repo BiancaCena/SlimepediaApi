@@ -1,5 +1,6 @@
 const { query } = require("express");
 const Slime = require("./../models/slimeModel");
+const QueryHandler = require("../utils/queryHandler");
 
 exports.extractGameId = async (req, res, next) => {
 	if (req.params.gameId) {
@@ -12,78 +13,17 @@ exports.extractGameId = async (req, res, next) => {
 
 exports.getAllSlimes = async (req, res) => {
 	try {
-		// ---------------- VALIDATION ---------------- //
-		const validGameIds = ["1", "2"];
-		if (req.query.games && !validGameIds.includes(req.query.games)) {
-			return res.status(400).json({
-				status: "fail",
-				message: "Invalid game id. The specified game does not exist",
-			});
-		}
-
-		// ---------------- INITIAL SETUP ---------------- //
-		// Create a copy of the query parameters from the request
-		const queryObj = { ...req.query };
-
-		// List fields to exclude from filtering (pagination, sorting, etc.)
-		const excludedFields = ["page", "sort", "limit", "fields"];
-		// Remove the excluded fields from the query object
-		excludedFields.forEach((field) => delete queryObj[field]);
-
-		// ---------------- FILTERING ---------------- //
-		// Convert the query object to a JSON string for manipulation
-		let queryStr = JSON.stringify(queryObj);
-
-		// Replace comparison operators with MongoDB's query syntax (e.g., $gte, $gt, $lte, $lt)
-		queryStr = queryStr.replace(
-			/\b(gte|gt|lte|lt|eq|ne|in|nin)\b/g,
-			(match) => `$${match}`
-		);
-
-		// Parse the modified query string back to an object for MongoDB query
-		// Create the query with the filtered conditions
-		let query = Slime.find(JSON.parse(queryStr));
-
-		// ---------------- SORTING ---------------- //
-		if (req.query.sort) {
-			// Separate the sort fields by space (ex. "type,name" becomes "type name")
-			const sortBy = req.query.sort.split(",").join(" ");
-			query = query.sort(sortBy);
-		} else {
-			// If no sort parameter is provided, use a default sorting
-			query = query.sort("_id");
-		}
-
-		// ---------------- LIMITING ---------------- //
-		if (req.query.fields) {
-			// Separate the limit fields by space (ex. "type,name" becomes "type name")
-			const fields = req.query.fields.split(",").join(" ");
-			// Select only the specified fields from the query results
-			query = query.select(fields);
-		} else {
-			// If no specific fields are requested, exclude the version field from the results
-			query = query.select("-__v");
-		}
-
-		// ---------------- PAGINATION ---------------- //
-		const page = req.query.page * 1 || 1;
-		const limit = req.query.limit * 1 || 6;
-
-		// Calculate the number of items to skip based on the current page and limit
-		const skip = (page - 1) * limit;
-
-		if (req.query.page) {
-			// Check if the requested page is valid
-			const numberOfSlimes = await Slime.countDocuments();
-			if (skip >= numberOfSlimes) throw new Error("This page does not exists");
-		}
-
-		// Apply pagination to the query
-		query = query.skip(skip).limit(limit);
+		// ---------------- BUILD QUERY ---------------- //
+		// Pass the query object and string
+		const queryHandler = new QueryHandler(Slime.find(), req.query)
+			.filter()
+			.sort()
+			.limitFields()
+			.paginate();
 
 		// ---------------- EXECUTE QUERY ---------------- //
 		// Execute the query to fetch the slimes from the database
-		const slimes = await query;
+		const slimes = await queryHandler.query;
 
 		// ---------------- RESPONSE ---------------- //
 		// Send a successful response with the fetched data
