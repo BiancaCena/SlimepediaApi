@@ -173,3 +173,50 @@ exports.getSlimesByLocation = async (req, res) => {
 		});
 	}
 };
+
+exports.getSlimesByType = async (req, res) => {
+	try {
+		// Run the aggregation pipeline on the Slime collection
+		const types = await Slime.aggregate([
+			// Group documents by the 'type' field, count occurrences, and aggregate the slime IDs.
+			{
+				$group: {
+					// Group by the 'type' field
+					_id: "$type",
+					// Count the number of slimes per type
+					count: { $sum: 1 },
+					// Aggregate unique slime IDs for each type
+					slimes: { $addToSet: "$_id" },
+				},
+			},
+			// Sort the 'slimes' array by the slime ID (sort the slimes within each type).
+			{
+				$addFields: {
+					slimes: {
+						$sortArray: {
+							input: "$slimes",
+							sortBy: 1, // ascending order
+						},
+					},
+				},
+			},
+			// Sort the type documents based on count in descending order
+			{
+				$sort: { count: -1 },
+			},
+		]);
+
+		// Return the response with status 200 and the aggregated data
+		res.status(200).json({
+			status: "success",
+			requestedAt: req.requestTime,
+			results: types.length,
+			data: { types },
+		});
+	} catch (err) {
+		res.status(404).json({
+			status: "fail",
+			message: err.message,
+		});
+	}
+};
