@@ -8,8 +8,13 @@ const {
 	GAME_IDS,
 } = require("../constants/slimeConstants");
 
+// Define schema
 const slimeSchema = new mongoose.Schema({
-	_id: String,
+	id: {
+		type: String,
+		required: [true, "A slime must have an id"],
+		unique: true,
+	},
 	name: {
 		type: String,
 		required: [true, "A slime must have a name"],

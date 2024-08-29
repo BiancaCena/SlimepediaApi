@@ -139,7 +139,8 @@ exports.getSlimesByLocation = async (req, res) => {
 					// Count the number of slimes per location
 					count: { $sum: 1 },
 					// Aggregate unique slime IDs for each location
-					slimes: { $addToSet: "$_id" },
+					// Use custom id instead of object id
+					slimes: { $addToSet: "$id" },
 				},
 			},
 			// Sort the 'slimes' array by the slime ID (sort the slimes within each location).
@@ -185,8 +186,9 @@ exports.getSlimesByType = async (req, res) => {
 					_id: "$type",
 					// Count the number of slimes per type
 					count: { $sum: 1 },
-					// Aggregate unique slime IDs for each type
-					slimes: { $addToSet: "$_id" },
+					// Aggregate unique slime IDs for each location
+					// Use custom id instead of object id
+					slimes: { $addToSet: "$id" },
 				},
 			},
 			// Sort the 'slimes' array by the slime ID (sort the slimes within each type).
