@@ -7,6 +7,7 @@ const handleCastErrorDB = (err) => {
 	return new ErrorHandler(message, 400);
 };
 
+// Handle Mongoose ValidationError and return a formatted ErrorHandler instance
 const handleValidationErrorDB = (err) => {
 	const errors = Object.values(err.errors).map((el) => el.message);
 
@@ -14,9 +15,10 @@ const handleValidationErrorDB = (err) => {
 	return new ErrorHandler(message, 400);
 };
 
+// Handle MongoDB duplicate key errors and return a formatted ErrorHandler instance
 const handleDuplicateFieldsDB = (err) => {
+	// Extract the duplicate field value from the error message
 	const value = err.errorResponse.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-
 	const message = `Duplicate field value: ${value}. Please use another value!`;
 	return new ErrorHandler(message, 400);
 };
@@ -69,7 +71,7 @@ module.exports = (err, req, res, next) => {
 		// Clone the error object for manipulation
 		let error = { ...err };
 
-		// Handle and format Mongoose-specific error by checking the instance
+		// Handle Mongoose-specific errors
 		if (err instanceof mongoose.Error.CastError) {
 			error = handleCastErrorDB(error);
 		}
@@ -77,7 +79,7 @@ module.exports = (err, req, res, next) => {
 			error = handleValidationErrorDB(error);
 		}
 
-		// Handle and format MongoDB-specific errors that can be encountered through Mongoose by error codes
+		// Handle MongoDB duplicate key errors
 		if (err.code === 11000) {
 			error = handleDuplicateFieldsDB(error);
 		}
