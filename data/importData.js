@@ -33,15 +33,9 @@ const slimes = JSON.parse(
 // Import data to database
 const importData = async () => {
 	try {
-		const transformedSlimes = slimes.map((slime) => ({
-			...slime,
-			_id: slime.id, // Assign id value to _id
-		}));
+		// Save slimes to the database
+		await Slime.insertMany(slimes);
 
-		// Save transformed slimes to the database
-		await Slime.insertMany(transformedSlimes);
-
-		// console.log("Data successfully loaded!");
 		process.exit();
 	} catch (err) {
 		console.log(err);
@@ -60,7 +54,6 @@ const deleteData = async () => {
 };
 
 // console.log(process.argv);
-
 if (process.argv[2] === "--import") {
 	importData();
 } else if (process.argv[2] === "--delete") {

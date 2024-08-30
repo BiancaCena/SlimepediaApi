@@ -4,6 +4,8 @@ const path = require("path");
 
 // import routes
 const slimeRouter = require("./routes/slimeRoutes");
+const ErrorHandler = require("./utils/errorHandler");
+const ErrorController = require("./controllers/errorController");
 
 const app = express();
 
@@ -27,5 +29,13 @@ app.use((req, res, next) => {
 
 // Declare routes
 app.use("/api", slimeRouter);
+
+// Catch-all route for undefined routes
+app.all("*", (req, res, next) => {
+	next(new ErrorHandler(`Cannot find ${req.originalUrl} on this server.`, 404));
+});
+
+// Error handling middleware
+app.use(ErrorController);
 
 module.exports = app;

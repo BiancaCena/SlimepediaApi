@@ -27,4 +27,10 @@ router
 	.patch(slimeController.updateSlime)
 	.delete(slimeController.deleteSlime);
 
+// Route to get list of slimes by location
+router.route("/slimes-by-location").get(slimeController.getSlimesByLocation);
+
+// Route to get list of slimes by type
+router.route("/slimes-by-type").get(slimeController.getSlimesByType);
+
 module.exports = router;

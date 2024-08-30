@@ -1,7 +1,10 @@
-const { query } = require("express");
 const Slime = require("./../models/slimeModel");
+const QueryHandler = require("../utils/queryHandler");
+const catchAsync = require("../utils/catchAsync");
+const ErrorHandler = require("../utils/errorHandler");
 
-exports.extractGameId = async (req, res, next) => {
+// Middleware to extract gameId from route parameters and add to query
+exports.extractGameId = (req, res, next) => {
 	if (req.params.gameId) {
 		// Extract the gameId from route parameters
 		req.query.games = req.params.gameId;
@@ -10,172 +13,190 @@ exports.extractGameId = async (req, res, next) => {
 	next();
 };
 
-exports.getAllSlimes = async (req, res) => {
-	try {
-		// ---------------- VALIDATION ---------------- //
-		const validGameIds = ["1", "2"];
-		if (req.query.games && !validGameIds.includes(req.query.games)) {
-			return res.status(400).json({
-				status: "fail",
-				message: "Invalid game id. The specified game does not exist",
-			});
-		}
+// To get all slimes, wrapped with catchAsync for error handling
+exports.getAllSlimes = catchAsync(async (req, res) => {
+	// Pass the query object and string
+	const queryHandler = new QueryHandler(Slime.find(), req.query)
+		.filter()
+		.sort()
+		.limitFields()
+		.paginate();
 
-		// ---------------- INITIAL SETUP ---------------- //
-		// Create a copy of the query parameters from the request
-		const queryObj = { ...req.query };
+	// Execute the query to fetch the slimes from the database
+	const slimes = await queryHandler.query;
 
-		// List fields to exclude from filtering (pagination, sorting, etc.)
-		const excludedFields = ["page", "sort", "limit", "fields"];
-		// Remove the excluded fields from the query object
-		excludedFields.forEach((field) => delete queryObj[field]);
+	// Send a successful response with the fetched data
+	res.status(200).json({
+		status: "success",
+		requestedAt: req.requestTime,
+		results: slimes.length,
+		data: { slimes },
+	});
+});
 
-		// ---------------- FILTERING ---------------- //
-		// Convert the query object to a JSON string for manipulation
-		let queryStr = JSON.stringify(queryObj);
+// To get a single slime by ID, wrapped with catchAsync
+exports.getSlime = catchAsync(async (req, res, next) => {
+	// Get the ID from request parameters
+	const requestedId = req.params.id;
 
-		// Replace comparison operators with MongoDB's query syntax (e.g., $gte, $gt, $lte, $lt)
-		queryStr = queryStr.replace(
-			/\b(gte|gt|lte|lt|eq|ne|in|nin)\b/g,
-			(match) => `$${match}`
-		);
-
-		// Parse the modified query string back to an object for MongoDB query
-		// Create the query with the filtered conditions
-		let query = Slime.find(JSON.parse(queryStr));
-
-		// ---------------- SORTING ---------------- //
-		if (req.query.sort) {
-			// Separate the sort fields by space (ex. "type,name" becomes "type name")
-			const sortBy = req.query.sort.split(",").join(" ");
-			query = query.sort(sortBy);
-		} else {
-			// If no sort parameter is provided, use a default sorting
-			query = query.sort("_id");
-		}
-
-		// ---------------- LIMITING ---------------- //
-		if (req.query.fields) {
-			// Separate the limit fields by space (ex. "type,name" becomes "type name")
-			const fields = req.query.fields.split(",").join(" ");
-			// Select only the specified fields from the query results
-			query = query.select(fields);
-		} else {
-			// If no specific fields are requested, exclude the version field from the results
-			query = query.select("-__v");
-		}
-
-		// ---------------- PAGINATION ---------------- //
-		const page = req.query.page * 1 || 1;
-		const limit = req.query.limit * 1 || 6;
-
-		// Calculate the number of items to skip based on the current page and limit
-		const skip = (page - 1) * limit;
-
-		if (req.query.page) {
-			// Check if the requested page is valid
-			const numberOfSlimes = await Slime.countDocuments();
-			if (skip >= numberOfSlimes) throw new Error("This page does not exists");
-		}
-
-		// Apply pagination to the query
-		query = query.skip(skip).limit(limit);
-
-		// ---------------- EXECUTE QUERY ---------------- //
-		// Execute the query to fetch the slimes from the database
-		const slimes = await query;
-
-		// ---------------- RESPONSE ---------------- //
-		// Send a successful response with the fetched data
-		res.status(200).json({
-			status: "success",
-			requestedAt: req.requestTime,
-			results: slimes.length,
-			data: { slimes },
-		});
-	} catch (err) {
-		// Handle errors and send a failure response
-		res.status(404).json({
-			status: "fail",
-			message: err.message || "An error occurred",
-		});
+	let slime;
+	// Check if the requestedId is a valid MongoDB ObjectId
+	if (mongoose.Types.ObjectId.isValid(requestedId)) {
+		// Query by _id if the requestedId is a valid ObjectId
+		slime = await Slime.findById(requestedId);
+	} else {
+		// Otherwise, query by custom id field
+		slime = await Slime.findOne({ id: requestedId });
 	}
-};
 
-exports.getSlime = async (req, res) => {
-	try {
-		const slime = await Slime.findById(req.params.id);
-
-		res.status(200).json({
-			status: "success",
-			requestedAt: req.requestTime,
-			data: { slime },
-		});
-	} catch (err) {
-		res.status(404).json({
-			status: "fail",
-			message: err,
-		});
+	if (!slime) {
+		// If no slime is found, create an instance of ErrorHandler and pass it to the error-handling middleware
+		return next(new ErrorHandler("No slime found with that ID", 404));
 	}
-};
 
-exports.createSlime = async (req, res) => {
-	try {
-		const newSlime = await Slime.create(req.body);
+	res.status(200).json({
+		status: "success",
+		requestedAt: req.requestTime,
+		data: { slime },
+	});
+});
 
-		res.status(201).json({
-			status: "success",
-			data: {
-				slime: newSlime,
+// To create a new slime, wrapped with catchAsync
+exports.createSlime = catchAsync(async (req, res) => {
+	const newSlime = await Slime.create(req.body);
+
+	res.status(201).json({
+		status: "success",
+		requestedAt: req.requestTime,
+		data: {
+			slime: newSlime,
+		},
+	});
+});
+
+// To update an existing slime by ID, wrapped with catchAsync
+exports.updateSlime = catchAsync(async (req, res) => {
+	const updatedSlime = await Slime.findByIdAndUpdate(req.params.id, req.body, {
+		new: true, // returns the new modified document rather than original.
+		runValidators: true, // validate the update operation against the model's schema
+	});
+
+	if (!updatedSlime) {
+		// If no slime is found, create an instance of AppError and pass it to next
+		return next(new ErrorHandler("No slime found with that ID", 404));
+	}
+
+	res.status(200).json({
+		status: "success",
+		requestedAt: req.requestTime,
+		data: {
+			slime: updatedSlime,
+		},
+	});
+});
+
+// To delete a slime by ID, wrapped with catchAsync
+exports.deleteSlime = catchAsync(async (req, res) => {
+	const deletedSlime = await Slime.findByIdAndDelete(req.params.id);
+
+	if (!deletedSlime) {
+		// If no slime is found, create an instance of AppError and pass it to next
+		return next(new ErrorHandler("No slime found with that ID", 404));
+	}
+
+	res.status(204).json({
+		status: "success",
+		requestedAt: req.requestTime,
+		data: {
+			slime: null,
+		},
+	});
+});
+
+// To get slimes by location, wrapped with catchAsync
+exports.getSlimesByLocation = catchAsync(async (req, res) => {
+	// Run the aggregation pipeline on the Slime collection
+	const locations = await Slime.aggregate([
+		// Deconstruct the 'locations' array field to output a document for each element.
+		{
+			$unwind: "$locations",
+		},
+		// Group documents by the 'locations' field, count occurrences, and aggregate the slime IDs.
+		{
+			$group: {
+				// Group by the 'locations' field
+				_id: "$locations",
+				// Count the number of slimes per location
+				count: { $sum: 1 },
+				// Aggregate unique slime IDs for each location
+				// Use custom id instead of object id
+				slimes: { $addToSet: "$id" },
 			},
-		});
-	} catch (err) {
-		res.status(400).json({
-			status: "fail",
-			message: err,
-		});
-	}
-};
-
-exports.updateSlime = async (req, res) => {
-	try {
-		const updatedSlime = await Slime.findByIdAndUpdate(
-			req.params.id,
-			req.body,
-			{
-				new: true, // returns the new modified document rather than original.
-				runValidators: true, // validate the update operation against the model's schema
-			}
-		);
-
-		res.status(200).json({
-			status: "success",
-			data: {
-				slime: updatedSlime,
+		},
+		// Sort the 'slimes' array by the slime ID (sort the slimes within each location).
+		{
+			$addFields: {
+				slimes: {
+					$sortArray: {
+						input: "$slimes",
+						sortBy: 1, // ascending order
+					},
+				},
 			},
-		});
-	} catch (err) {
-		res.status(404).json({
-			status: "fail",
-			message: err,
-		});
-	}
-};
+		},
+		// Sort the location documents based on count in descending order
+		{
+			$sort: { count: -1 },
+		},
+	]);
 
-exports.deleteSlime = async (req, res) => {
-	try {
-		await Slime.findByIdAndDelete(req.params.id);
+	// Return the response with status 200 and the aggregated data
+	res.status(200).json({
+		status: "success",
+		requestedAt: req.requestTime,
+		results: locations.length,
+		data: { locations },
+	});
+});
 
-		res.status(204).json({
-			status: "success",
-			data: {
-				slime: null,
+// To get slimes by type, wrapped with catchAsync
+exports.getSlimesByType = catchAsync(async (req, res) => {
+	// Run the aggregation pipeline on the Slime collection
+	const types = await Slime.aggregate([
+		// Group documents by the 'type' field, count occurrences, and aggregate the slime IDs.
+		{
+			$group: {
+				// Group by the 'type' field
+				_id: "$type",
+				// Count the number of slimes per type
+				count: { $sum: 1 },
+				// Aggregate unique slime IDs for each location
+				// Use custom id instead of object id
+				slimes: { $addToSet: "$id" },
 			},
-		});
-	} catch (err) {
-		res.status(404).json({
-			status: "fail",
-			message: err,
-		});
-	}
-};
+		},
+		// Sort the 'slimes' array by the slime ID (sort the slimes within each type).
+		{
+			$addFields: {
+				slimes: {
+					$sortArray: {
+						input: "$slimes",
+						sortBy: 1, // ascending order
+					},
+				},
+			},
+		},
+		// Sort the type documents based on count in descending order
+		{
+			$sort: { count: -1 },
+		},
+	]);
+
+	// Return the response with status 200 and the aggregated data
+	res.status(200).json({
+		status: "success",
+		requestedAt: req.requestTime,
+		results: types.length,
+		data: { types },
+	});
+});
