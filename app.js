@@ -2,6 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
+const hpp = require("hpp");
 const path = require("path");
 
 // Import routes and error handling utilities
@@ -30,6 +32,25 @@ app.use("/api", limiter);
 
 // Middleware to parse incoming JSON requests
 app.use(express.json({}));
+
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+
+// Prevent parameter pollution
+app.use(
+	hpp({
+		whitelist: [
+			"_id", // Whitelist '_id' parameter
+			"id", // Whitelist 'id' parameter
+			"name", // Whitelist 'name' parameter
+			"diet", // Whitelist 'diet' parameter
+			"favouriteFood", // Whitelist 'favouriteFood' parameter
+			"type", // Whitelist 'type' parameter
+			"locations", // Whitelist 'locations' parameter
+			"games", // Whitelist 'games' parameter
+		],
+	})
+);
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
