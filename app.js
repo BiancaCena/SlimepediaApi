@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
 const path = require("path");
 
 // import routes
@@ -10,13 +11,17 @@ const ErrorController = require("./controllers/errorController");
 
 const app = express();
 
+// Set security HTTP headers
+app.use(helmet());
+
 // Middleware for development logging
 if (process.env.NODE_ENV === "development") {
 	app.use(morgan("dev"));
 }
 
-// Allow 100 requests from same IP in one hour
+// Limit api requests for each IP
 const limiter = rateLimit({
+	// Allow 100 requests from same IP in one hour
 	max: 100,
 	windowMs: 60 * 60 * 1000,
 	message: "Too many requests from this IP, please try again in an hour.",
@@ -24,7 +29,7 @@ const limiter = rateLimit({
 app.use("/api", limiter);
 
 // Middleware to parse JSON bodies
-app.use(express.json());
+app.use(express.json({}));
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
