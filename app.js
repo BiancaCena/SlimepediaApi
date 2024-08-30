@@ -4,7 +4,7 @@ const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const path = require("path");
 
-// import routes
+// Import routes and error handling utilities
 const slimeRouter = require("./routes/slimeRoutes");
 const ErrorHandler = require("./utils/errorHandler");
 const ErrorController = require("./controllers/errorController");
@@ -14,21 +14,21 @@ const app = express();
 // Set security HTTP headers
 app.use(helmet());
 
-// Middleware for development logging
+// Middleware for logging HTTP requests in development environment
 if (process.env.NODE_ENV === "development") {
 	app.use(morgan("dev"));
 }
 
-// Limit api requests for each IP
+// Rate limiter middleware to limit API requests per IP
 const limiter = rateLimit({
-	// Allow 100 requests from same IP in one hour
+	// Allow up to 100 requests per IP address per hour
 	max: 100,
-	windowMs: 60 * 60 * 1000,
+	windowMs: 60 * 60 * 1000, // 1 hour in milliseconds
 	message: "Too many requests from this IP, please try again in an hour.",
 });
 app.use("/api", limiter);
 
-// Middleware to parse JSON bodies
+// Middleware to parse incoming JSON requests
 app.use(express.json({}));
 
 // Serve static files from the 'public' directory
@@ -49,7 +49,7 @@ app.all("*", (req, res, next) => {
 	next(new ErrorHandler(`Cannot find ${req.originalUrl} on this server.`, 404));
 });
 
-// Error handling middleware
+// Global error handling middleware
 app.use(ErrorController);
 
 module.exports = app;
