@@ -7,7 +7,7 @@ const hpp = require("hpp");
 const path = require("path");
 
 // Import routes and error handling utilities
-const slimeRouter = require("./routes/slimeRoutes");
+const apiRouter = require("./routes/apiRoutes");
 const ErrorHandler = require("./utils/errorHandler");
 const ErrorController = require("./controllers/errorController");
 
@@ -63,7 +63,7 @@ app.use((req, res, next) => {
 });
 
 // Declare routes
-app.use("/api", slimeRouter);
+app.use("/api", apiRouter);
 
 // Catch-all route for undefined routes
 app.all("*", (req, res, next) => {
