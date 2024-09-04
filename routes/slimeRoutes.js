@@ -16,15 +16,10 @@ slimeRouter
 	.patch(slimeController.updateSlimeByObjectId)
 	.delete(slimeController.deleteSlimeByObjectId);
 
-// Route to get all slimes by game ID
-slimeRouter
-	.route("/game/:gameId")
-	.get(slimeController.extractGameId, slimeController.getAllSlimes);
-
-// Route to handle a specific slime by custom property
+// Route to get slimes by custom property (as a parameter)
 slimeRouter
 	.route("/:propertyName/:propertyValue")
-	.get(slimeController.getSlimeByProperty);
+	.get(slimeController.extractProperty, slimeController.getAllSlimes);
 
 // Route to get list of slimes by location
 slimeRouter.route("/by-location").get(slimeController.getSlimesByLocation);

@@ -2,20 +2,23 @@ const Slime = require("./../models/slimeModel");
 const catchAsync = require("../utils/catchAsync");
 const dataController = require("./dataController");
 
-// Middleware to extract gameId from route parameters and add to query
-exports.extractGameId = (req, res, next) => {
-	if (req.params.gameId) {
-		// Extract the gameId from route parameters
-		req.query.games = req.params.gameId;
+// Middleware to extract propertyName and propertyValue from route parameters and add to query
+exports.extractProperty = (req, res, next) => {
+	// Extract params
+	const key = req.params.propertyName;
+	const value = req.params.propertyValue;
+	if (key && value) {
+		// Append only if property does not exists
+		if (!req.query.hasOwnProperty(key)) {
+			req.query[key] = value;
+		}
 	}
 
 	next();
 };
 
-// To get all slimes, wrapped with catchAsync for error handling
+// To get all slimes using a reusable function from dataController
 exports.getAllSlimes = dataController.getAll(Slime);
-
-exports.getSlimeByProperty = dataController.getOneByProperty(Slime);
 
 // To create get a slime by object id using a reusable function from dataController
 exports.getSlimeByObjectId = dataController.getOneByObjectId(Slime);

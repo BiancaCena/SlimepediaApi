@@ -2,28 +2,6 @@ const QueryHandler = require("../utils/queryHandler");
 const catchAsync = require("../utils/catchAsync");
 const ErrorHandler = require("../utils/errorHandler");
 
-// To get all documents, wrapped with catchAsync
-exports.getAll = (Model) =>
-	catchAsync(async (req, res, next) => {
-		// Pass the query object and string
-		const queryHandler = new QueryHandler(Model.find(), req.query)
-			.filter()
-			.sort()
-			.limitFields()
-			.paginate();
-
-		// Execute the query to fetch the documents from the database
-		const documents = await queryHandler.query;
-        
-		// Send a successful response with the fetched data
-		res.status(200).json({
-			status: "success",
-			requestedAt: req.requestTime,
-			results: documents.length,
-			data: documents,
-		});
-	});
-
 // To get a single document by Object Id, wrapped with catchAsync
 exports.getOneByObjectId = (Model) =>
 	catchAsync(async (req, res, next) => {
@@ -43,29 +21,29 @@ exports.getOneByObjectId = (Model) =>
 		});
 	});
 
-// To get a single document by custom property, wrapped with catchAsync
-exports.getOneByProperty = (Model) =>
+// To get all documents, wrapped with catchAsync
+exports.getAll = (Model) =>
 	catchAsync(async (req, res, next) => {
-		const propertyName = req.params.propertyName;
-		const propertyValue = req.params.propertyValue;
+		// Pass the query object and string
+		const queryHandler = new QueryHandler(Model.find(), req.query)
+			.filter()
+			.sort()
+			.limitFields()
+			.paginate();
 
-		// Create a dynamic query object using bracket notation
-		const query = { [propertyName]: propertyValue };
+		// Execute the query to fetch the documents from the database
+		const documents = await queryHandler.query;
 
-		// Find the document by the custom property
-		const document = await Model.findOne(query);
+		// Get pagination info
+		const pagination = await queryHandler.getPaginationInfo(Model);
 
-		if (!document) {
-			// If no document is found, create an instance of ErrorHandler and pass it to the error-handling middleware
-			return next(
-				new ErrorHandler(`No document found with that ${propertyName}`, 404)
-			);
-		}
-
+		// Send a successful response with the fetched data
 		res.status(200).json({
 			status: "success",
 			requestedAt: req.requestTime,
-			data: document,
+			results: documents.length,
+			pagination,
+			data: documents,
 		});
 	});
 
