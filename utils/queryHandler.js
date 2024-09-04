@@ -20,7 +20,7 @@ class QueryHandler {
 
 		// Replace comparison operators with MongoDB's query syntax (e.g., $gte, $gt, $lte, $lt)
 		queryStr = queryStr.replace(
-			/\b(gte|gt|lte|lt|eq|ne|in|nin)\b/g,
+			/\b(gte|gt|lte|lt|eq|ne|in|nin|all|size)\b/g,
 			(match) => `$${match}`
 		);
 
