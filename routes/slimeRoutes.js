@@ -9,6 +9,12 @@ slimeRouter
 	.get(slimeController.getAllSlimes)
 	.post(slimeController.createSlime);
 
+// Route to get list of slimes by location
+slimeRouter.route("/by-location").get(slimeController.getSlimesByLocation);
+
+// Route to get list of slimes by type
+slimeRouter.route("/by-type").get(slimeController.getSlimesByType);
+
 // Route to handle a specific slime by Object ID
 slimeRouter
 	.route("/:id")
@@ -20,11 +26,5 @@ slimeRouter
 slimeRouter
 	.route("/:propertyName/:propertyValue")
 	.get(slimeController.extractProperty, slimeController.getAllSlimes);
-
-// Route to get list of slimes by location
-slimeRouter.route("/by-location").get(slimeController.getSlimesByLocation);
-
-// Route to get list of slimes by type
-slimeRouter.route("/by-type").get(slimeController.getSlimesByType);
 
 module.exports = slimeRouter;
