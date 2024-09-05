@@ -2,6 +2,7 @@ class QueryHandler {
 	constructor(query, queryString) {
 		this.query = query;
 		this.queryString = queryString;
+		this.isPaginated = false; // Flag to track if pagination was applied
 	}
 
 	filter() {
@@ -19,7 +20,7 @@ class QueryHandler {
 
 		// Replace comparison operators with MongoDB's query syntax (e.g., $gte, $gt, $lte, $lt)
 		queryStr = queryStr.replace(
-			/\b(gte|gt|lte|lt|eq|ne|in|nin)\b/g,
+			/\b(gte|gt|lte|lt|eq|ne|in|nin|all|size)\b/g,
 			(match) => `$${match}`
 		);
 
@@ -58,16 +59,44 @@ class QueryHandler {
 	}
 
 	paginate() {
-		const page = this.queryString.page * 1 || 1;
-		const limit = this.queryString.limit * 1 || 6;
+		this.page = this.queryString.page * 1 || 1;
+		this.limit = this.queryString.limit * 1 || 6;
 
 		// Calculate the number of items to skip based on the current page and limit
-		const skip = (page - 1) * limit;
+		const skip = (this.page - 1) * this.limit;
 
 		// Apply pagination to the query
-		this.query = this.query.skip(skip).limit(limit);
+		this.query = this.query.skip(skip).limit(this.limit);
+
+		// Set isPaginated to true
+		this.isPaginated = true;
 
 		return this;
+	}
+
+	async getPaginationInfo(Model) {
+		// Return null if pagination was not applied
+		if (!this.isPaginated) return null;
+
+		// Retrieve the filters used in the query
+		const filters = this.query.getFilter();
+
+		// Count the total number of documents that match the filters
+		const totalCount = await Model.countDocuments(filters);
+
+		// If no documents match the filters, return null
+		if (totalCount === 0) return null;
+
+		// Calculate the total number of pages based on the total count and the limit per page
+		const totalPages = Math.ceil(totalCount / this.limit);
+
+		// Return pagination information
+		return {
+			page: this.page, // Current page number
+			limit: this.limit, // Number of documents per page
+			totalPages, // Total number of pages
+			totalCount, // Total number of documents
+		};
 	}
 }
 

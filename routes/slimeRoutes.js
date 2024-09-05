@@ -1,36 +1,30 @@
 const express = require("express");
 const slimeController = require("./../controllers/slimeController");
 
-const router = express.Router();
+const slimeRouter = express.Router();
 
-// Default route
-router
+// Route to get all slimes
+slimeRouter
 	.route("/")
 	.get(slimeController.getAllSlimes)
 	.post(slimeController.createSlime);
 
-// Route to get all slimes (general listing)
-router
-	.route("/slimes")
-	.get(slimeController.getAllSlimes)
-	.post(slimeController.createSlime);
-
-// Middleware to alias route parameters
-router
-	.route("/game/:gameId/slimes")
-	.get(slimeController.extractGameId, slimeController.getAllSlimes);
-
-// Route to handle a specific slime by ID
-router
-	.route("/slimes/:id")
-	.get(slimeController.getSlime)
-	.patch(slimeController.updateSlime)
-	.delete(slimeController.deleteSlime);
-
 // Route to get list of slimes by location
-router.route("/slimes-by-location").get(slimeController.getSlimesByLocation);
+slimeRouter.route("/by-location").get(slimeController.getSlimesByLocation);
 
 // Route to get list of slimes by type
-router.route("/slimes-by-type").get(slimeController.getSlimesByType);
+slimeRouter.route("/by-type").get(slimeController.getSlimesByType);
 
-module.exports = router;
+// Route to handle a specific slime by Object ID
+slimeRouter
+	.route("/:id")
+	.get(slimeController.getSlimeByObjectId) // Updated controller method for clarity
+	.patch(slimeController.updateSlimeByObjectId)
+	.delete(slimeController.deleteSlimeByObjectId);
+
+// Route to get slimes by custom property (as a parameter)
+slimeRouter
+	.route("/:propertyName/:propertyValue")
+	.get(slimeController.extractProperty, slimeController.getAllSlimes);
+
+module.exports = slimeRouter;
