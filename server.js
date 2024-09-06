@@ -17,6 +17,9 @@ const DB = process.env.DATABASE.replace(
 	process.env.DATABASE_PASSWORD
 );
 
+// Set global Mongoose options
+mongoose.set("strictQuery", true);
+
 mongoose
 	.connect(DB)
 	.then((con) => {

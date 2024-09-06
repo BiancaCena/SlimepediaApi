@@ -47,6 +47,7 @@ exports.getAll = (Model) =>
 		});
 	});
 
+/*
 // To create a new document, wrapped with catchAsync
 exports.createOne = (Model) =>
 	catchAsync(async (req, res, next) => {
@@ -95,3 +96,4 @@ exports.deleteOneByObjectId = (Model) =>
 			data: null,
 		});
 	});
+*/
