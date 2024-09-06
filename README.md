@@ -4,7 +4,7 @@
 
 ### **Overview**
 
-SlimepediaApi provides a set of endpoints for retrieving information about slimes from the game _Slime Rancher_. This RestfulAPI is built with Node.js, Express, MongoDB, and Mongoose.
+SlimepediaApi provides a set of endpoints for retrieving information about slimes from the game _Slime Rancher_. This API is built with Node.js, Express, MongoDB, and Mongoose.
 
 ### **Endpoints**
 
@@ -199,7 +199,7 @@ You can filter results by specifying query parameters that match the properties 
      GET /api/slimes?games[all]=1&games[all]=2
      ```
 
-   - To get slimes that spawns in 1 location only using **Size (`$size`)** operator:
+   - To get slimes that spawns in one location only using **Size (`$size`)** operator:
 
      ```sh
      GET /api/slimes?locations[size]=1
