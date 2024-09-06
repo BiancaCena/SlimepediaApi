@@ -23,15 +23,6 @@ exports.getAllSlimes = dataController.getAll(Slime);
 // To create get a slime by object id using a reusable function from dataController
 exports.getSlimeByObjectId = dataController.getOneByObjectId(Slime);
 
-// To create a new slime using a reusable function from dataController
-exports.createSlime = dataController.createOne(Slime);
-
-// To update an existing slime by ID using a reusable function from dataController
-exports.updateSlimeByObjectId = dataController.updateOneByObjectId(Slime);
-
-// To delete a slime by Object ID using a reusable function from dataController
-exports.deleteSlimeByObjectId = dataController.deleteOneByObjectId(Slime);
-
 // To get slimes by location, wrapped with catchAsync
 exports.getSlimesByLocation = catchAsync(async (req, res) => {
 	// Run the aggregation pipeline on the Slime collection
@@ -119,3 +110,14 @@ exports.getSlimesByType = catchAsync(async (req, res) => {
 		data: { types },
 	});
 });
+
+/*
+// To create a new slime using a reusable function from dataController
+exports.createSlime = dataController.createOne(Slime);
+
+// To update an existing slime by ID using a reusable function from dataController
+exports.updateSlimeByObjectId = dataController.updateOneByObjectId(Slime);
+
+// To delete a slime by Object ID using a reusable function from dataController
+exports.deleteSlimeByObjectId = dataController.deleteOneByObjectId(Slime);
+*/
