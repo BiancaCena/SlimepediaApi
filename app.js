@@ -1,3 +1,4 @@
+// Import dependencies
 const express = require("express");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
@@ -5,13 +6,18 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const hpp = require("hpp");
 const path = require("path");
+const compression = require("compression");
 
 // Import routes and error handling utilities
 const apiRouter = require("./routes/apiRoutes");
 const ErrorHandler = require("./utils/errorHandler");
 const ErrorController = require("./controllers/errorController");
 
+// Initialize Express app
 const app = express();
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, "public")));
 
 // Set security HTTP headers
 app.use(helmet());
@@ -31,7 +37,7 @@ const limiter = rateLimit({
 app.use("/api", limiter);
 
 // Middleware to parse incoming JSON requests
-app.use(express.json({}));
+app.use(express.json());
 
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
@@ -40,20 +46,20 @@ app.use(mongoSanitize());
 app.use(
 	hpp({
 		whitelist: [
-			"_id", // Whitelist '_id' parameter
-			"id", // Whitelist 'id' parameter
-			"name", // Whitelist 'name' parameter
-			"diet", // Whitelist 'diet' parameter
-			"favouriteFood", // Whitelist 'favouriteFood' parameter
-			"type", // Whitelist 'type' parameter
-			"locations", // Whitelist 'locations' parameter
-			"games", // Whitelist 'games' parameter
+			"_id",
+			"id",
+			"name",
+			"diet",
+			"favouriteFood",
+			"type",
+			"locations",
+			"games",
 		],
 	})
 );
 
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, "public")));
+// Middleware to automatically compress HTTP responses to improve performance and reduce bandwidth usage.
+app.use(compression());
 
 // Basic middleware to log request time
 app.use((req, res, next) => {
@@ -73,4 +79,5 @@ app.all("*", (req, res, next) => {
 // Global error handling middleware
 app.use(ErrorController);
 
+// Export the app
 module.exports = app;
