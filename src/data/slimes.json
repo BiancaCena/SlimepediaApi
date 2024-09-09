@@ -2,7 +2,7 @@
 	{
 		"id": "tarr",
 		"name": "The Tarr",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/tarr.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/tarr.webp",
 		"diet": "other",
 		"favouriteFood": "ranchers",
 		"type": "hostile",
@@ -18,7 +18,7 @@
 	{
 		"id": "pink",
 		"name": "Pink Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/pink.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/pink.webp",
 		"diet": "all",
 		"favouriteToy": "beachball",
 		"type": "docile",
@@ -33,7 +33,7 @@
 	{
 		"id": "tabby",
 		"name": "Tabby Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/tabby.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/tabby.webp",
 		"diet": "meat",
 		"favouriteToy": "yarn",
 		"favouriteFood": "stonyhen",
@@ -56,7 +56,7 @@
 	{
 		"id": "rock",
 		"name": "Rock Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/rock.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/rock.webp",
 		"diet": "veggie",
 		"favouriteToy": "bigrock",
 		"favouriteFood": "beet",
@@ -77,7 +77,7 @@
 	{
 		"id": "phosphor",
 		"name": "Phosphor Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/phosphor.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/phosphor.webp",
 		"diet": "fruit",
 		"favouriteToy": "nightlight",
 		"favouriteFood": "cuberry",
@@ -97,7 +97,7 @@
 	{
 		"id": "honey",
 		"name": "Honey Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/honey.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/honey.webp",
 		"diet": "fruit",
 		"favouriteToy": "bee",
 		"favouriteFood": "mango",
@@ -116,7 +116,7 @@
 	{
 		"id": "puddle",
 		"name": "Puddle Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/puddle.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/puddle.webp",
 		"diet": "water",
 		"favouriteToy": "ducky",
 		"type": "docile",
@@ -131,7 +131,7 @@
 	{
 		"id": "boom",
 		"name": "Boom Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/boom.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/boom.webp",
 		"diet": "meat",
 		"favouriteToy": "bomb",
 		"favouriteFood": "briarhen",
@@ -151,7 +151,7 @@
 	{
 		"id": "hunter",
 		"name": "Hunter Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/hunter.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/hunter.webp",
 		"diet": "meat",
 		"favouriteToy": "chicken",
 		"favouriteFood": "roostro",
@@ -174,7 +174,7 @@
 	{
 		"id": "rad",
 		"name": "Rad Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/rad.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/rad.webp",
 		"diet": "veggie",
 		"favouriteToy": "cell",
 		"favouriteFood": "oca",
@@ -190,7 +190,7 @@
 	{
 		"id": "crystal",
 		"name": "Crystal Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/crystal.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/crystal.webp",
 		"diet": "veggie",
 		"favouriteToy": "crystalball",
 		"favouriteFood": "onion",
@@ -212,7 +212,7 @@
 	{
 		"id": "quantum",
 		"name": "Quantum Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/quantum.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/quantum.webp",
 		"diet": "fruit",
 		"favouriteToy": "puzzlecube",
 		"favouriteFood": "lemon",
@@ -228,7 +228,7 @@
 	{
 		"id": "dervish",
 		"name": "Dervish Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/dervish.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/dervish.webp",
 		"diet": "fruit",
 		"favouriteToy": "gyro",
 		"favouriteFood": "pear",
@@ -248,7 +248,7 @@
 	{
 		"id": "tangle",
 		"name": "Tangle Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/tangle.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/tangle.webp",
 		"diet": "meat",
 		"favouriteToy": "solmate",
 		"favouriteFood": "paintedhen",
@@ -268,7 +268,7 @@
 	{
 		"id": "fire",
 		"name": "Fire Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/fire.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/fire.webp",
 		"diet": "ash",
 		"favouriteToy": "brick",
 		"type": "harmful",
@@ -288,7 +288,7 @@
 	{
 		"id": "mosaic",
 		"name": "Mosaic Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/mosaic.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/mosaic.webp",
 		"diet": "veggie",
 		"favouriteToy": "disco",
 		"favouriteFood": "parsnip",
@@ -311,7 +311,7 @@
 	{
 		"id": "saber",
 		"name": "Saber Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/saber.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/saber.webp",
 		"diet": "meat",
 		"favouriteToy": "stegobuddy",
 		"type": "harmful",
@@ -332,7 +332,7 @@
 	{
 		"id": "gold",
 		"name": "Gold Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/gold.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/gold.webp",
 		"diet": "other",
 		"favouriteFood": "ginger",
 		"type": "special",
@@ -352,7 +352,7 @@
 	{
 		"id": "lucky",
 		"name": "Lucky Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/lucky.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/lucky.webp",
 		"diet": "meat",
 		"type": "special",
 		"slimepedia": {
@@ -366,7 +366,7 @@
 	{
 		"id": "quicksilver",
 		"name": "Quicksilver Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/quicksilver.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/quicksilver.webp",
 		"diet": "other",
 		"type": "special",
 		"slimepedia": {
@@ -389,7 +389,7 @@
 	{
 		"id": "glitch",
 		"name": "Glitch Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/glitch.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/glitch.webp",
 		"diet": "other",
 		"type": "special",
 		"slimepedia": {
@@ -403,7 +403,7 @@
 	{
 		"id": "twinkle",
 		"name": "Twinkle Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/twinkle.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/twinkle.webp",
 		"diet": "other",
 		"type": "special",
 		"slimepedia": {
@@ -417,7 +417,7 @@
 	{
 		"id": "cotton",
 		"name": "Cotton Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/cotton.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/cotton.webp",
 		"diet": "veggie",
 		"favouriteFood": "lettuce",
 		"type": "docile",
@@ -432,7 +432,7 @@
 	{
 		"id": "flutter",
 		"name": "Flutter Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/flutter.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/flutter.webp",
 		"diet": "nectar",
 		"favouriteFood": "moondewnectar",
 		"type": "docile",
@@ -452,7 +452,7 @@
 	{
 		"id": "batty",
 		"name": "Batty Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/batty.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/batty.webp",
 		"diet": "fruit",
 		"favouriteFood": "pomegranite",
 		"type": "docile",
@@ -472,7 +472,7 @@
 	{
 		"id": "angler",
 		"name": "Angler Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/angler.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/angler.webp",
 		"diet": "meat",
 		"favouriteFood": "seahen",
 		"type": "docile",
@@ -493,7 +493,7 @@
 	{
 		"id": "ringtail",
 		"name": "Ringtail Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/ringtail.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/ringtail.webp",
 		"diet": "all",
 		"type": "docile",
 		"slimepedia": {
@@ -513,7 +513,7 @@
 	{
 		"id": "yolky",
 		"name": "Yolky Slime",
-		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/public/images/yolky.webp",
+		"image": "https://raw.githubusercontent.com/BiancaCena/SlimepediaApi/main/src/public/images/yolky.webp",
 		"diet": "other",
 		"type": "docile",
 		"slimepedia": {

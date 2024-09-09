@@ -4,7 +4,8 @@ const fs = require("fs");
 const path = require("path");
 const Slime = require("../models/slimeModel");
 
-dotenv.config({ path: "./config.env" });
+// Load environment variables
+dotenv.config({ path: "./src/config/config.env" });
 
 // Set up connection to database
 const DB = process.env.DATABASE.replace(

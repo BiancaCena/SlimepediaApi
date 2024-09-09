@@ -1,3 +1,5 @@
+// Main Express application setup
+
 // Import dependencies
 const express = require("express");
 const morgan = require("morgan");

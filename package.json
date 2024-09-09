@@ -3,10 +3,10 @@
 	"version": "1.0.0",
 	"main": "app.js",
 	"scripts": {
-		"start": "node server.js",
-		"dev": "cross-env NODE_ENV=development nodemon server.js",
-		"start:prod": "cross-env NODE_ENV=production nodemon server.js",
-		"debug": "node --inspect server.js"
+		"start": "node src/api/server.js",
+		"dev": "cross-env NODE_ENV=development nodemon src/api/server.js",
+		"start:prod": "cross-env NODE_ENV=production nodemon src/api/server.js",
+		"debug": "node --inspect src/api/server.js"
 	},
 	"repository": {
 		"type": "git",
