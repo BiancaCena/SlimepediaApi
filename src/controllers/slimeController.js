@@ -1,4 +1,4 @@
-const Slime = require("./../models/slimeModel");
+const Slime = require("../models/slimeModel");
 const catchAsync = require("../utils/catchAsync");
 const dataController = require("./dataController");
 
