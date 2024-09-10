@@ -1,5 +1,4 @@
 // Main Express application setup
-
 // Import dependencies
 const express = require("express");
 const morgan = require("morgan");
@@ -17,6 +16,9 @@ const ErrorController = require("./controllers/errorController");
 
 // Initialize Express app
 const app = express();
+
+// Trust the first proxy
+app.set("trust proxy", 1);
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
@@ -36,7 +38,9 @@ const limiter = rateLimit({
 	windowMs: 60 * 60 * 1000, // 1 hour in milliseconds
 	message: "Too many requests from this IP, please try again in an hour.",
 });
-app.use("/api", limiter);
+
+// Apply rate limiting to all requests
+app.use(limiter);
 
 // Middleware to parse incoming JSON requests
 app.use(express.json());
@@ -71,7 +75,7 @@ app.use((req, res, next) => {
 });
 
 // Declare routes
-app.use("/api", apiRouter);
+app.use("/", apiRouter);
 
 // Catch-all route for undefined routes
 app.all("*", (req, res, next) => {

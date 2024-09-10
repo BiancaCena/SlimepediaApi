@@ -1,12 +1,13 @@
 {
 	"name": "slimepedia",
 	"version": "1.0.0",
-	"main": "app.js",
+	"main": "api/index.js",
 	"scripts": {
-		"start": "node src/api/server.js",
-		"dev": "cross-env NODE_ENV=development nodemon src/api/server.js",
-		"start:prod": "cross-env NODE_ENV=production nodemon src/api/server.js",
-		"debug": "node --inspect src/api/server.js"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node api/index.js",
+		"dev": "cross-env NODE_ENV=development nodemon api/index.js",
+		"start:prod": "cross-env NODE_ENV=production nodemon api/index.js",
+		"debug": "node --inspect api/index.js"
 	},
 	"repository": {
 		"type": "git",
@@ -29,12 +30,13 @@
 		"helmet": "^7.1.0",
 		"hpp": "^0.2.3",
 		"mongoose": "^8.5.3",
-		"morgan": "^1.10.0"
+		"morgan": "^1.10.0",
+		"node": "^22.8.0"
 	},
 	"devDependencies": {
 		"cross-env": "^7.0.3"
 	},
 	"engines": {
-		"node": ">=22.6.0"
+		"node": ">=20.x"
 	}
 }
