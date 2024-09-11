@@ -4,6 +4,6 @@ const slimeRouter = require("./slimeRoutes"); // Adjust the path as necessary
 const apiRouter = express.Router();
 
 // Mount the slime router
-apiRouter.use("/slimes", slimeRouter);
+apiRouter.use("/", slimeRouter);
 
 module.exports = apiRouter;
