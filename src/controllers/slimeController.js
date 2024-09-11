@@ -9,7 +9,7 @@ exports.extractProperty = (req, res, next) => {
 	const value = req.params.propertyValue;
 	if (key && value) {
 		// Append only if property does not exists
-		if (!req.query.hasOwnProperty(key)) {
+		if (!Object.prototype.hasOwnProperty.call(req.query, key)) {
 			req.query[key] = value;
 		}
 	}
