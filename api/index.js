@@ -11,9 +11,9 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
 // Import routes and error handling utilities
-const apiRouter = require("./routes/apiRoutes");
-const ErrorHandler = require("./utils/errorHandler");
-const ErrorController = require("./controllers/errorController");
+const apiRouter = require("../src/routes/apiRoutes");
+const ErrorHandler = require("../src/utils/errorHandler");
+const ErrorController = require("../src/controllers/errorController");
 
 process.on("uncaughtException", (err) => {
 	console.log("UNCAUGHT EXCEPTION! Shutting down...");
