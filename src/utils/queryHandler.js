@@ -28,7 +28,6 @@ class QueryHandler {
 
 		// Parse the modified query string back to an object for MongoDB query
 		// Create the query with the filtered conditions
-		console.log(JSON.parse(queryStr));
 		this.query = this.query.find(JSON.parse(queryStr));
 
 		return this;

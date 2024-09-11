@@ -19,7 +19,6 @@ const DB = process.env.DATABASE.replace(
 mongoose
 	.connect(DB)
 	.then((con) => {
-		// console.log(con.connections);
 		console.log("Connected to MongoDB");
 	})
 	.catch((err) => {
@@ -47,7 +46,7 @@ const importData = async () => {
 const deleteData = async () => {
 	try {
 		await Slime.deleteMany({});
-		console.log("Data successfully deleted!");
+
 		process.exit();
 	} catch (err) {
 		console.log(err);
