@@ -18,10 +18,12 @@ class QueryHandler {
 		// Convert the query object to a JSON string for manipulation
 		let queryStr = JSON.stringify(queryObj);
 
+		// A regex that matches any of the special keys within double quotes that are followed by a colon
+		const pattern = /"(gte|gt|lte|lt|eq|ne|in|nin|all|size)"(?=\s*:)/g;
 		// Replace comparison operators with MongoDB's query syntax (e.g., $gte, $gt, $lte, $lt)
 		queryStr = queryStr.replace(
-			/\b(gte|gt|lte|lt|eq|ne|in|nin|all|size)\b/g,
-			(match) => `$${match}`
+			pattern,
+			(fullMatch, capturedKey) => `"$${capturedKey}"`
 		);
 
 		// Parse the modified query string back to an object for MongoDB query

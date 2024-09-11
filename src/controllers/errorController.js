@@ -37,8 +37,6 @@ const sendErrorDevelopment = (err, res) => {
 
 // Send error response in production mode with user-friendly messages
 const sendErrorProduction = (err, res) => {
-	console.log("Error in Production:", err);
-
 	if (err.isOperational) {
 		// Operational errors: known errors handled by the application
 		res.status(err.statusCode).json({
@@ -46,9 +44,6 @@ const sendErrorProduction = (err, res) => {
 			message: err.message,
 		});
 	} else {
-		// Programming errors: unexpected or unknown errors
-		console.error("ERROR", err);
-
 		// Send generic message
 		res.status(500).json({
 			status: "error",
