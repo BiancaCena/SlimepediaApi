@@ -1,12 +1,13 @@
 {
 	"name": "slimepedia",
 	"version": "1.0.0",
-	"main": "api/index.js",
+	"main": "src/server.js",
 	"scripts": {
-		"start": "node api/index.js",
-		"dev": "cross-env NODE_ENV=development nodemon api/index.js",
-		"start:prod": "cross-env NODE_ENV=production nodemon api/index.js",
-		"debug": "node --inspect api/index.js"
+		"build": "tsc",
+		"start": "node src/server.js",
+		"dev": "cross-env NODE_ENV=development nodemon src/server.js",
+		"start:prod": "cross-env NODE_ENV=production nodemon src/server.js",
+		"debug": "node --inspect src/server.js"
 	},
 	"repository": {
 		"type": "git",
