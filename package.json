@@ -3,7 +3,6 @@
 	"version": "1.0.0",
 	"main": "src/server.js",
 	"scripts": {
-		"build": "tsc",
 		"start": "node src/server.js",
 		"dev": "cross-env NODE_ENV=development nodemon src/server.js",
 		"start:prod": "cross-env NODE_ENV=production nodemon src/server.js",
