@@ -1,4 +1,3 @@
-// Main Express application setup
 // Import dependencies
 const express = require("express");
 const morgan = require("morgan");
@@ -8,11 +7,21 @@ const mongoSanitize = require("express-mongo-sanitize");
 const hpp = require("hpp");
 const path = require("path");
 const compression = require("compression");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
 // Import routes and error handling utilities
 const apiRouter = require("./routes/apiRoutes");
 const ErrorHandler = require("./utils/errorHandler");
 const ErrorController = require("./controllers/errorController");
+
+process.on("uncaughtException", (err) => {
+	console.log("UNCAUGHT EXCEPTION! Shutting down...");
+	console.log(err.name, err.message);
+	process.exit(1);
+});
+
+dotenv.config({ path: "./src/config/config.env" });
 
 // Initialize Express app
 const app = express();
@@ -85,5 +94,41 @@ app.all("*", (req, res, next) => {
 // Global error handling middleware
 app.use(ErrorController);
 
-// Export the app
+// Connect to the database
+if (mongoose.connection.readyState === 0) {
+	// Set up connection to database
+	const DB = process.env.DATABASE.replace(
+		"<PASSWORD>",
+		process.env.DATABASE_PASSWORD
+	);
+
+	// Set global Mongoose options
+	mongoose.set("strictQuery", false);
+
+	// Connect to the database
+	mongoose
+		.connect(DB)
+		.then((con) => {
+			console.log("Connected to MongoDB");
+		})
+		.catch((err) => {
+			console.error("Error connecting to MongoDB", err);
+		});
+}
+
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+	console.log(`App running on port ${port}...`);
+});
+
+process.on("unhandledRejection", (err) => {
+	console.log("UNHANDLED REJECTION! Shutting down...");
+	console.log(err.name, err.message);
+	server.close(() => {
+		process.exit(1);
+	});
+});
+
+// Export the Express API
 module.exports = app;
