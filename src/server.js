@@ -83,7 +83,12 @@ app.use((req, res, next) => {
 	next();
 });
 
-// Declare routes
+// Temporarily redirect root to /api/slimes
+app.get("/", (req, res) => {
+	res.redirect("/api/slimes");
+});
+
+// Use the apiRouter for routes starting with '/api'
 app.use("/", apiRouter);
 
 // Catch-all route for undefined routes
