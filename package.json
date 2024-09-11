@@ -1,13 +1,14 @@
 {
 	"name": "slimepedia",
 	"version": "1.0.0",
-	"main": "api/index.js",
+	"main": "src/index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node api/index.js",
-		"dev": "cross-env NODE_ENV=development nodemon api/index.js",
-		"start:prod": "cross-env NODE_ENV=production nodemon api/index.js",
-		"debug": "node --inspect api/index.js"
+		"build": "npm run start",
+		"start": "node src/index.js",
+		"vercel": "vercel dev",
+		"dev": "cross-env NODE_ENV=development nodemon src/index.js",
+		"start:prod": "cross-env NODE_ENV=production nodemon src/index.js",
+		"debug": "node --inspect src/index.js"
 	},
 	"repository": {
 		"type": "git",
