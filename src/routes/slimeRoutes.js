@@ -4,7 +4,7 @@ const slimeController = require("./../controllers/slimeController");
 const slimeRouter = express.Router();
 
 // Route to get all slimes
-slimeRouter.route("/slimes").get(slimeController.getAllSlimes);
+slimeRouter.route("/").get(slimeController.getAllSlimes);
 // .post(slimeController.createSlime);
 
 // Route to get list of slimes by location
