@@ -64,7 +64,7 @@ module.exports = (err, req, res, next) => {
 		sendErrorDevelopment(err, res);
 	} else if (process.env.NODE_ENV === "production") {
 		// Clone the error object for manipulation
-		let error = { ...err };
+		let error = err;
 
 		// Handle Mongoose-specific errors
 		if (err instanceof mongoose.Error.CastError) {

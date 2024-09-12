@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
 // Import routes and error handling utilities
-const apiRouter = require("./routes/apiRoutes");
+const apiRouter = require("./routes/apiRouter");
 const ErrorHandler = require("./utils/errorHandler");
 const ErrorController = require("./controllers/errorController");
 
@@ -76,6 +76,9 @@ app.use(
 // Middleware to automatically compress HTTP responses to improve performance and reduce bandwidth usage.
 app.use(compression());
 
+// Use the apiRouter for routes starting with '/api'
+app.use("/", apiRouter);
+
 // Basic middleware to log request time
 app.use((req, res, next) => {
 	req.requestTime = new Date().toISOString();
@@ -87,9 +90,6 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
 	res.redirect("/api/slimes");
 });
-
-// Use the apiRouter for routes starting with '/api'
-app.use("/", apiRouter);
 
 // Catch-all route for undefined routes
 app.all("*", (req, res, next) => {
