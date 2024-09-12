@@ -1,5 +1,5 @@
 const express = require("express");
-const slimeController = require("./../controllers/slimeController");
+const slimeController = require("../controllers/slimeController");
 
 const slimeRouter = express.Router();
 

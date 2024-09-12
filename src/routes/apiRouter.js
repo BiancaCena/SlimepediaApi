@@ -1,5 +1,5 @@
 const express = require("express");
-const slimeRouter = require("./slimeRoutes"); // Adjust the path as necessary
+const slimeRouter = require("./slimeRouter"); // Adjust the path as necessary
 
 const apiRouter = express.Router();
 
